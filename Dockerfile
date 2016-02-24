@@ -41,7 +41,7 @@ RUN cd /dspace/config \
     && sed -i 's@<!--<aspect name="Versioning Aspect" path="resource://aspects/Versioning/" />-->@<aspect name="Versioning Aspect" path="resource://aspects/Versioning/" />@g' xmlui.xconf
 
 #CRON
-RUN apt-get install -y cron rsyslog
+RUN apt-get update && apt-get install -y cron rsyslog
 ADD cronjobConfiguration /home/dspace/cronjobConfiguration
 RUN su - dspace && cd /home/dspace && crontab cronjobConfiguration
 #END - CRON
