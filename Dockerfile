@@ -20,7 +20,7 @@ RUN buildDep=" \
         openjdk-7-jdk \
     "; apt-get update && apt-get install -y $buildDep \
     && cd /usr/src/DSpace-dspace-$DS_VERSION \
-#    && sed -i "s/path=\"Mirage\/\"/path=\"Mirage2\/\"/" /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/xmlui.xconf \
+    && sed -i "s/path=\"Mirage\/\"/path=\"Mirage2\/\"/" /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/xmlui.xconf \
     && su dspace -c 'mvn package -Dmirage2.on=true' \
     && sed -i "s/<java classname=\"org.dspace.storage.rdbms.DatabaseUtils\" classpathref=\"class.path\" fork=\"yes\" failonerror=\"yes\">/<java classname=\"org.dspace.storage.rdbms.DatabaseUtils\" classpathref=\"class.path\" fork=\"yes\" failonerror=\"no\">/" /usr/src/DSpace-dspace-$DS_VERSION/dspace/target/dspace-installer/build.xml
 
