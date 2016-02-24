@@ -1,0 +1,23 @@
+## DSPACE CRONTAB
+ 
+#-----------------
+# GLOBAL VARIABLES
+#-----------------
+DSPACE = /dspace
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+JAVA_OPTS="-Xmx512M -Xms512M -Dfile.encoding=UTF-8"
+ 
+ 
+#----------------
+# DAILY TASKS
+#----------------
+ 
+0 0 * * * chmod 0777 -R $DSPACE/log
+0 0 * * * $DSPACE/bin/dspace oai import -o > /dev/null
+0 0 * * * $DSPACE/bin/dspace index-discovery > /dev/null
+30 0 * * * $DSPACE/bin/dspace index-discovery -o > /dev/null
+0 2 * * * $DSPACE/bin/dspace sub-daily
+0 3 * * * $DSPACE/bin/dspace filter-media
+0 4 * * * $DSPACE/bin/dspace curate -q admin_ui
+0 1 1 * * $DSPACE/bin/dspace cleanup > /dev/null
