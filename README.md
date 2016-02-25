@@ -11,5 +11,5 @@
 
 ## Usage
 
-docker run -d --link your_postgresql_container:db -p 8080:8080 -e ADMIN=admin_email -e PASS=admin_pass -e FIRSTNAME=admin_firstname -e LASTNAME=admin_lastname governoregionaldosacores/dspace
+docker run -d --link your_postgresql_container:db -p 8080:8080 -e ADMIN=admin_email -e PASS=admin_pass -e FIRSTNAME=admin_firstname -e LASTNAME=admin_lastname governoregionalazcores/dspace
 
