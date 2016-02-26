@@ -1,7 +1,7 @@
 FROM tomcat:8.0
 
 ENV TOMCAT_USER dspace
-ENV DS_VERSION 5.2
+ENV DS_VERSION 5.4
 ENV JAVA_OPTS "-XX:+UseParallelGC -Xmx4096m -Xms4096m"
 
 RUN apt-get update
