@@ -25,7 +25,6 @@ RUN buildDep=" \
     && sed -i "s/<java classname=\"org.dspace.storage.rdbms.DatabaseUtils\" classpathref=\"class.path\" fork=\"yes\" failonerror=\"yes\">/<java classname=\"org.dspace.storage.rdbms.DatabaseUtils\" classpathref=\"class.path\" fork=\"yes\" failonerror=\"no\">/" /usr/src/DSpace-dspace-$DS_VERSION/dspace/target/dspace-installer/build.xml
 
 ADD messages_pt_BR.xml /usr/src/DSpace-dspace-$DS_VERSION/dspace-xmlui/src/main/webapp/i18n/messages_pt_BR.xml
-ADD pom.xml /usr/src/DSpace-dspace-$DS_VERSION/dspace/modules/additions/pom.xml
 
 RUN cd /usr/src/DSpace-dspace-$DS_VERSION/dspace/target/dspace-installer \
     && gosu dspace ant fresh_install \
