@@ -2,9 +2,8 @@ FROM tomcat:8.0
 
 ENV TOMCAT_USER dspace
 ENV DS_VERSION 5.4
-ENV JAVA_OPTS "-XX:+UseParallelGC -Xmx4096m -Xms4096m"
+ENV JAVA_OPTS "-XX:+UseParallelGC -Xmx4096m -Xms4096m -Dfile.encoding=UTF-8"
 
-RUN apt-get update
 RUN useradd -m dspace
 RUN gpg --keyserver pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
 RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.2/gosu-$(dpkg --print-architecture)" \
