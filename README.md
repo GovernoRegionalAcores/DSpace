@@ -5,7 +5,6 @@
 - PostgreSQL is not included in this image;
 - Mirage2 resposive theme is enabled;
 - SSL disabled;
-- Portuguese locale enabled;
 - Admin is created by passing the necessary arguments through docker run.
 
 ## Usage

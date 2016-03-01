@@ -2,9 +2,7 @@ FROM tomcat:8.0
 
 ENV TOMCAT_USER dspace
 ENV DS_VERSION 5.2
-ENV JAVA_OPTS "-XX:+UseParallelGC -Xmx4096m -Xms4096m"
 
-RUN apt-get update
 RUN useradd -m dspace
 RUN gpg --keyserver pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
 RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.2/gosu-$(dpkg --print-architecture)" \
@@ -24,8 +22,6 @@ RUN buildDep=" \
     && su dspace -c 'mvn package -Dmirage2.on=true' \
     && sed -i "s/<java classname=\"org.dspace.storage.rdbms.DatabaseUtils\" classpathref=\"class.path\" fork=\"yes\" failonerror=\"yes\">/<java classname=\"org.dspace.storage.rdbms.DatabaseUtils\" classpathref=\"class.path\" fork=\"yes\" failonerror=\"no\">/" /usr/src/DSpace-dspace-$DS_VERSION/dspace/target/dspace-installer/build.xml
 
-ADD messages_pt_BR.xml /usr/src/DSpace-dspace-$DS_VERSION/dspace-xmlui/src/main/webapp/i18n/messages_pt_BR.xml
-
 RUN cd /usr/src/DSpace-dspace-$DS_VERSION/dspace/target/dspace-installer \
     && gosu dspace ant fresh_install \
     && cd /dspace \
@@ -38,12 +34,6 @@ RUN cd /dspace/webapps/rest/WEB-INF \
 
 RUN cd /dspace/config \
     && sed -i 's@<!--<aspect name="Versioning Aspect" path="resource://aspects/Versioning/" />-->@<aspect name="Versioning Aspect" path="resource://aspects/Versioning/" />@g' xmlui.xconf
-
-#CRON
-RUN apt-get update && apt-get install -y cron rsyslog
-ADD cronjobConfiguration /home/dspace/cronjobConfiguration
-RUN su - dspace && cd /home/dspace && crontab cronjobConfiguration
-#END - CRON
 
 COPY create-admin.sh /sbin/create-admin.sh
 
