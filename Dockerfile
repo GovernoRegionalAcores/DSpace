@@ -1,4 +1,4 @@
-FROM tomcat:8.0
+FROM tomcat:7.0
 
 ENV TOMCAT_USER dspace
 ENV DS_VERSION 5.4
