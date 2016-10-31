@@ -53,3 +53,5 @@ ENTRYPOINT ["entrypoint.sh"]
 
 CMD ["run"]
 
+ADD local.cfg.EXAMPLE /dspace/config/local.cfg
+RUN chmod 644 /dspace/config/local.cfg && chown dspace:dspace /dspace/config/local.cfg
