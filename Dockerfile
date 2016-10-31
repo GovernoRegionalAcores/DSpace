@@ -1,10 +1,9 @@
-FROM tomcat:8.0
+FROM tomcat:8.0-jre8
 
 ENV TOMCAT_USER dspace
-ENV DS_VERSION 5.4
-ENV JAVA_OPTS "-XX:+UseParallelGC -Xmx4096m -Xms4096m"
+ENV DS_VERSION 6.0
+ENV JAVA_OPTS "-XX:+UseParallelGC -Xmx4096m -Xms4096m -Dfile.encoding=UTF-8"
 
-RUN apt-get update
 RUN useradd -m dspace
 RUN gpg --keyserver pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
 RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.2/gosu-$(dpkg --print-architecture)" \
@@ -41,7 +40,7 @@ RUN cd /dspace/config \
     && sed -i 's@<!--<aspect name="Versioning Aspect" path="resource://aspects/Versioning/" />-->@<aspect name="Versioning Aspect" path="resource://aspects/Versioning/" />@g' xmlui.xconf
 
 #CRON
-RUN apt-get install -y cron rsyslog
+RUN apt-get update && apt-get install -y cron rsyslog
 ADD cronjobConfiguration /home/dspace/cronjobConfiguration
 RUN su - dspace && cd /home/dspace && crontab cronjobConfiguration
 #END - CRON
@@ -53,6 +52,4 @@ RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 
 CMD ["run"]
-ADD dspace.cfg /dspace/config/dspace.cfg
-RUN chmod 644 /dspace/config/dspace.cfg && chown dspace:dspace /dspace/config/dspace.cfg 
 
