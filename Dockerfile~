@@ -26,6 +26,9 @@ RUN buildDep=" \
 ADD messages_pt_BR.xml /usr/src/DSpace-dspace-$DS_VERSION/dspace-xmlui/src/main/webapp/i18n/messages_pt_BR.xml
 ADD pom.xml /usr/src/DSpace-dspace-$DS_VERSION/dspace/modules/additions/pom.xml
 
+ADD local.cfg.EXAMPLE /dspace/config/local.cfg
+RUN chmod 644 /dspace/config/local.cfg && chown dspace:dspace /dspace/config/local.cfg
+
 RUN cd /usr/src/DSpace-dspace-$DS_VERSION/dspace/target/dspace-installer \
     && gosu dspace ant fresh_install \
     && cd /dspace \
@@ -53,5 +56,4 @@ ENTRYPOINT ["entrypoint.sh"]
 
 CMD ["run"]
 
-ADD local.cfg.EXAMPLE /dspace/config/local.cfg
-RUN chmod 644 /dspace/config/local.cfg && chown dspace:dspace /dspace/config/local.cfg
+
