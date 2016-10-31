@@ -13,6 +13,10 @@ RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/dow
     && chmod +x /usr/local/bin/gosu
 RUN curl -SsL https://github.com/DSpace/DSpace/archive/dspace-$DS_VERSION.tar.gz | tar -C /usr/src/ -xzf -
 RUN mkdir /dspace && chown -R dspace /dspace /usr/src/DSpace-dspace-$DS_VERSION
+
+ADD local.cfg.EXAMPLE /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg
+RUN chmod 644 /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg && chown dspace:dspace /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg
+
 RUN buildDep=" \
         git \
         maven \
@@ -21,13 +25,10 @@ RUN buildDep=" \
     && cd /usr/src/DSpace-dspace-$DS_VERSION \
     && sed -i "s/path=\"Mirage\/\"/path=\"Mirage2\/\"/" /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/xmlui.xconf \
     && su dspace -c 'mvn package -Dmirage2.on=true' \
-    && sed -i "s/<java classname=\"org.dspace.storage.rdbms.DatabaseUtils\" classpathref=\"class.path\" fork=\"yes\" failonerror=\"yes\">/<java classname=\"org.dspace.storage.rdbms.DatabaseUtils\" classpathref=\"class.path\" fork=\"yes\" failonerror=\"no\">/" /usr/src/DSpace-dspace-$DS_VERSION/dspace/target/dspace-installer/build.xml
+    && sed -i "s/<java classname=\"org.dspace.app.launcher.ScriptLauncher\" classpathref=\"class.path\" fork=\"yes\" failonerror=\"yes\">/<java classname=\"org.dspace.app.launcher.ScriptLauncher\" classpathref=\"class.path\" fork=\"yes\" failonerror=\"no\">/" /usr/src/DSpace-dspace-$DS_VERSION/dspace/target/dspace-installer/build.xml
 
 ADD messages_pt_BR.xml /usr/src/DSpace-dspace-$DS_VERSION/dspace-xmlui/src/main/webapp/i18n/messages_pt_BR.xml
 ADD pom.xml /usr/src/DSpace-dspace-$DS_VERSION/dspace/modules/additions/pom.xml
-
-ADD local.cfg.EXAMPLE /dspace/config/local.cfg
-RUN chmod 644 /dspace/config/local.cfg && chown dspace:dspace /dspace/config/local.cfg
 
 RUN cd /usr/src/DSpace-dspace-$DS_VERSION/dspace/target/dspace-installer \
     && gosu dspace ant fresh_install \
