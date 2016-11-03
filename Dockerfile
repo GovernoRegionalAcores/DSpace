@@ -17,14 +17,16 @@ RUN mkdir /dspace && chown -R dspace /dspace /usr/src/DSpace-dspace-$DS_VERSION
 ADD local.cfg.EXAMPLE /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg
 RUN chmod 644 /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg && chown dspace:dspace /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg
 
+RUN buildDep=" \
+        git \
+        maven \
+        openjdk-7-jdk \
+    "; apt-get update && apt-get install -y $buildDep
+
 RUN cd /usr/src && curl http://mirrors.fe.up.pt/pub/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar -C . -xzf -
 ENV PATH /usr/src/apache-maven-3.3.9/bin:${PATH}
 
-RUN buildDep=" \
-        git \
-        openjdk-7-jdk \
-    "; apt-get update && apt-get install -y $buildDep \
-    && cd /usr/src/DSpace-dspace-$DS_VERSION \
+RUN cd /usr/src/DSpace-dspace-$DS_VERSION \
     && sed -i "s/path=\"Mirage\/\"/path=\"Mirage2\/\"/" /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/xmlui.xconf \
     && gosu dspace bash -c 'mvn package -Dmirage2.on=true' \
     && sed -i "s/<java classname=\"org.dspace.app.launcher.ScriptLauncher\" classpathref=\"class.path\" fork=\"yes\" failonerror=\"yes\">/<java classname=\"org.dspace.app.launcher.ScriptLauncher\" classpathref=\"class.path\" fork=\"yes\" failonerror=\"no\">/" /usr/src/DSpace-dspace-$DS_VERSION/dspace/target/dspace-installer/build.xml
@@ -33,7 +35,7 @@ ADD messages_pt_BR.xml /usr/src/DSpace-dspace-$DS_VERSION/dspace-xmlui/src/main/
 ADD pom.xml /usr/src/DSpace-dspace-$DS_VERSION/dspace/modules/additions/pom.xml
 
 RUN cd /usr/src/DSpace-dspace-$DS_VERSION/dspace/target/dspace-installer \
-    && gosu dspace bash -c 'ant fresh_install' \
+    && gosu dspace ant fresh_install \
     && cd /dspace \
     && rm -r /usr/src/* \
     && apt-get purge -y --auto-remove $buildDep && rm -rf /var/lib/apt/lists/* /tmp/*
