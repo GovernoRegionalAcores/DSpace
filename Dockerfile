@@ -33,7 +33,7 @@ ADD messages_pt_BR.xml /usr/src/DSpace-dspace-$DS_VERSION/dspace-xmlui/src/main/
 ADD pom.xml /usr/src/DSpace-dspace-$DS_VERSION/dspace/modules/additions/pom.xml
 
 RUN cd /usr/src/DSpace-dspace-$DS_VERSION/dspace/target/dspace-installer \
-    && gosu dspace ant fresh_install \
+    && gosu dspace bash -c 'ant fresh_install' \
     && cd /dspace \
     && rm -r /usr/src/* \
     && apt-get purge -y --auto-remove $buildDep && rm -rf /var/lib/apt/lists/* /tmp/*
