@@ -21,6 +21,9 @@ RUN cd /usr/src && curl http://mirrors.fe.up.pt/pub/apache/maven/maven-3/3.3.9/b
 RUN chown -R dspace /usr/src/apache-maven-3.3.9
 ENV PATH "/usr/src/apache-maven-3.3.9/bin:${PATH}"
 
+RUN mvn --version
+RUN su dspace -c 'mvn --version'
+
 RUN buildDep=" \
         git \
         openjdk-7-jdk \
