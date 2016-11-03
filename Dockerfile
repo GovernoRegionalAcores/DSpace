@@ -18,11 +18,7 @@ ADD local.cfg.EXAMPLE /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg
 RUN chmod 644 /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg && chown dspace:dspace /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg
 
 RUN cd /usr/src && curl http://mirrors.fe.up.pt/pub/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar -C . -xzf -
-RUN chown -R dspace /usr/src/apache-maven-3.3.9
 ENV PATH /usr/src/apache-maven-3.3.9/bin:${PATH}
-
-RUN mvn --version
-RUN su dspace -c 'mvn --version'
 
 RUN buildDep=" \
         git \
@@ -30,7 +26,7 @@ RUN buildDep=" \
     "; apt-get update && apt-get install -y $buildDep \
     && cd /usr/src/DSpace-dspace-$DS_VERSION \
     && sed -i "s/path=\"Mirage\/\"/path=\"Mirage2\/\"/" /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/xmlui.xconf \
-    && su dspace -c 'mvn package -Dmirage2.on=true' \
+    && gosu dspace -c 'mvn package -Dmirage2.on=true' \
     && sed -i "s/<java classname=\"org.dspace.app.launcher.ScriptLauncher\" classpathref=\"class.path\" fork=\"yes\" failonerror=\"yes\">/<java classname=\"org.dspace.app.launcher.ScriptLauncher\" classpathref=\"class.path\" fork=\"yes\" failonerror=\"no\">/" /usr/src/DSpace-dspace-$DS_VERSION/dspace/target/dspace-installer/build.xml
 
 ADD messages_pt_BR.xml /usr/src/DSpace-dspace-$DS_VERSION/dspace-xmlui/src/main/webapp/i18n/messages_pt_BR.xml
