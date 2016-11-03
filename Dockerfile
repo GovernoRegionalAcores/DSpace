@@ -17,9 +17,11 @@ RUN mkdir /dspace && chown -R dspace /dspace /usr/src/DSpace-dspace-$DS_VERSION
 ADD local.cfg.EXAMPLE /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg
 RUN chmod 644 /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg && chown dspace:dspace /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg
 
+RUN cd /usr/src && curl http://mirrors.fe.up.pt/pub/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar -C . -xzf -
+ENV PATH="/usr/src/apache-maven-3.3.9/bin:${PATH}"
+
 RUN buildDep=" \
         git \
-        maven \
         openjdk-7-jdk \
     "; apt-get update && apt-get install -y $buildDep \
     && cd /usr/src/DSpace-dspace-$DS_VERSION \
