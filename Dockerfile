@@ -19,11 +19,10 @@ RUN chmod 644 /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg && chow
 
 RUN buildDep=" \
         git \
-        maven \
+        ant \
         openjdk-7-jdk \
     "; apt-get update && apt-get install -y $buildDep
 
-RUN apt-get remove -y maven
 RUN cd /usr/src && curl http://mirrors.fe.up.pt/pub/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz | tar -C . -xzf -
 ENV PATH /usr/src/apache-maven-3.3.9/bin:${PATH}
 
