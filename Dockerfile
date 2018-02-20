@@ -1,7 +1,7 @@
 FROM tomcat:8.0
 
 ENV TOMCAT_USER dspace
-ENV DS_VERSION 6.0
+ENV DS_VERSION 6.2
 ENV JAVA_OPTS "-XX:+UseParallelGC -Xmx4096m -Xms4096m -Dfile.encoding=UTF-8"
 
 RUN useradd -m dspace
