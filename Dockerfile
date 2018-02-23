@@ -30,6 +30,7 @@ RUN cd /usr/src && curl http://mirrors.fe.up.pt/pub/apache/maven/maven-3/3.3.9/b
 ENV PATH /usr/src/apache-maven-3.3.9/bin:${PATH}
 
 RUN cd /usr/src/DSpace-dspace-$DS_VERSION \
+    && chown -R dspace:dspace /root && chmod -R +x /root \
     && sed -i "s/path=\"Mirage\/\"/path=\"Mirage2\/\"/" /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/xmlui.xconf \
     && gosu dspace bash -c 'mvn package -Dmirage2.on=true' \
     && sed -i "s/<java classname=\"org.dspace.app.launcher.ScriptLauncher\" classpathref=\"class.path\" fork=\"yes\" failonerror=\"yes\">/<java classname=\"org.dspace.app.launcher.ScriptLauncher\" classpathref=\"class.path\" fork=\"yes\" failonerror=\"no\">/" /usr/src/DSpace-dspace-$DS_VERSION/dspace/target/dspace-installer/build.xml
