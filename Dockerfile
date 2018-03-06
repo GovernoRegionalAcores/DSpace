@@ -19,6 +19,7 @@ RUN chmod 644 /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg && chow
 
 RUN cd /root && mkdir .npm
 RUN chown -R dspace /root/.npm
+RUN chown -R dspace /usr/local/lib/node_modules
 
 RUN buildDep=" \
         git \
