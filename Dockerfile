@@ -17,6 +17,9 @@ RUN mkdir /dspace && chown -R dspace /dspace /usr/src/DSpace-dspace-$DS_VERSION
 ADD local.cfg.EXAMPLE /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg
 RUN chmod 644 /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg && chown dspace:dspace /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg
 
+RUN cd /root && mkdir .npm
+RUN chown -R dspace:dspace /root && chmod -R +x /root
+
 RUN buildDep=" \
         git \
         ant \
