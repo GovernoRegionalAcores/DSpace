@@ -6,8 +6,8 @@ ENV JAVA_OPTS "-XX:+UseParallelGC -Xmx4096m -Xms4096m -Dfile.encoding=UTF-8"
 
 RUN useradd -m dspace
 RUN gpg --keyserver pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
-RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.2/gosu-$(dpkg --print-architecture)" \
-    && curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.2/gosu-$(dpkg --print-architecture).asc" \
+RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-$(dpkg --print-architecture)" \
+    && curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-$(dpkg --print-architecture).asc" \
     && gpg --verify /usr/local/bin/gosu.asc \
     && rm /usr/local/bin/gosu.asc \
     && chmod +x /usr/local/bin/gosu
@@ -16,10 +16,6 @@ RUN mkdir /dspace && chown -R dspace /dspace /usr/src/DSpace-dspace-$DS_VERSION
 
 ADD local.cfg.EXAMPLE /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg
 RUN chmod 644 /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg && chown dspace:dspace /usr/src/DSpace-dspace-$DS_VERSION/dspace/config/local.cfg
-
-RUN cd /root && mkdir .npm
-RUN chown -R dspace /root/.npm
-RUN chown -R dspace /usr/local/lib/node_modules
 
 RUN buildDep=" \
         git \
